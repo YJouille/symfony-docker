@@ -1,0 +1,39 @@
+#flash_message_container {
+    position: fixed;
+    bottom: 50px;
+    right: 0px;
+    z-index: 1000;
+    max-width: 100%;
+
+    @include media-breakpoint-up(sm) {
+        right: 32px;
+    }
+}
+
+.flash_message {
+    .toast-header {
+        .text-md {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+.bg-success {
+    background-color: green;
+}
+
+.bg-danger {
+    background-color: red;
+}
+
+.bg-warning {
+    background-color: orange;
+}
+
+.bg-info {
+    background-color: blue;
+}
+
+.bg-secondary {
+    background-color: grey;
+}

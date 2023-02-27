@@ -1,0 +1,22 @@
+{% extends "mail/layout.html.twig" %}
+
+{% block title %}
+    Une erreur est survenue sur l'application
+{% endblock %}
+
+{% block message %}
+    <p>
+        Le {{ "now"|date("m/d/Y") }} à {{ "now"|date("H:i:s") }}
+        <br/>
+        Sur la page
+        <a href="{{ errorLocationUrl }}">
+            {{ errorLocationPath }}
+        </a>
+    </p>
+    <p style="font-size: 1.2rem; font-weight: 700;">
+        {{ message }}
+    </p>
+    <p style="font-size: 0.8rem;color: #666; margin-top: 20px;">
+        {{ stackstrace|nl2br }}
+    </p>
+{% endblock %}

@@ -1,0 +1,14 @@
+vich_uploader:
+    db_driver: orm
+    twig: true            # set to false to disable twig integration
+    form: true
+    metadata:
+        auto_detection: true
+        cache: file
+        type: attribute
+
+    mappings:
+        user_avatar:
+            uri_prefix: '%app.path.user_avatar%'
+            upload_destination: '%kernel.project_dir%%app.path.upload_dir%%app.path.user_avatar%'
+            namer: app.directory_namer.webp

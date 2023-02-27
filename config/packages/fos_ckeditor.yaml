@@ -1,0 +1,24 @@
+# Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
+
+twig:
+    form_themes:
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+fos_ck_editor:
+    base_path: "build/ckeditor"
+    js_path:   "build/ckeditor/ckeditor.js"
+    configs:
+        my_config:
+            language: fr
+            toolbar: "full"
+            uiColor: "#000000"
+            bodyClass: "ckeditor-custom"
+            contentsCss: "/build/ckeditorCustom/ckeditorCustom.css"
+            skin: "moono-dark,/build/ckeditorCustom/moono-dark/"
+            extraPlugins: 
+                - "colorbutton"
+                - "showblocks"
+                - "font"
+                - "justify"
+    toolbars:
+        items:
+            full.colors: []

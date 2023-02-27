@@ -1,0 +1,17 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_5_layout.html.twig']
+    globals:
+        baseurl: '%env(BASE_URL)%'
+when@dev:
+    twig:
+        globals:
+            baseurl: '%env(BASE_URL)%'
+when@test:
+    twig:
+        strict_variables: true
+
+when@prod:
+    twig:
+        globals:
+            baseurl: 'https://%env(DOMAIN)%'

@@ -1,0 +1,36 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_row(form.firstname)}}
+        </div>
+        <div class="col-sm-6">
+            {{ form_row(form.lastname) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_row(form.pseudo) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+    <div class="row">
+        {% if is_granted("ROLE_ADMIN") %}
+            <div>
+                {{ form_row(form.roles) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="row mt-4">
+        {% if app.request.get("_route") == "registration" %}
+            <div class="col-sm-6">
+                {{ form_row(form.agreeToTerms) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="btn-container mt-5">
+        {{ form_row(form.submit) }}
+    </div>
+{{ form_end(form) }}
+

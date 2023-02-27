@@ -1,0 +1,64 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app.env: '%env(APP_ENV)%'
+    app.base_url: '%env(BASE_URL)%'
+    app.mail_contact_from: '%env(MAIL_CONTACT_FROM)%'
+    app.mail_contact_to: '%env(MAIL_CONTACT_TO)%'
+    app.mail_webmaster: '%env(MAIL_WEBMASTER)%'
+    app.labels.user: 'Utilisateur'
+    app.path.upload_dir: /var/uploads
+    app.path.user_avatar: /user/avatar
+
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    app.directory_namer.webp:
+        class: App\Service\VichCustomNamer\WebpNamer
+        public: true
+
+    monolog.line_formatter: # Your name
+        class: Monolog\Formatter\LineFormatter
+        arguments: [ ~, ~, true ]
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\EventListener\User\EmailChangedNotifier:
+        tags:
+            -   name: 'doctrine.orm.entity_listener'
+                event: 'preUpdate'
+                entity: 'App\Entity\User'
+
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+        arguments: [ "@request_stack", "@monolog.logger", "@App\\Service\\Mail\\Notifier"]
+
+    app.redirect_exception_listener:
+        class: App\EventListener\RedirectExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.vich_file_update_listener:
+        class: App\EventListener\VichFileUpdateListener
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.pre_upload }
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+

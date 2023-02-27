@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Metas -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="canonical" href="{{ baseurl }}" />
+    <link rel="preload" as="font" href="{{ asset('build/fonts/Barlow-Regular.ttf') }}" crossorigin>
+
+    <!-- Icons -->
+    <link rel="shortcut icon" href="{{ asset('build/images/icon.svg') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('build/images/icon.svg') }}" />
+
+    <!-- Title -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Styles -->
+    {{ encore_entry_link_tags("app") }}
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+    <div id="loader">
+    </div>
+    <header>
+        {% block header %}
+        {% endblock %}
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    {% block footer %}
+    {% endblock %}        
+
+    <!-- Notifications -->
+    {{ include("partials/flashMessage.html.twig") }}
+
+    <!-- Scripts -->
+    <script>
+        const frontFlashMessages = JSON.parse('{{ constant("App\\Helper\\ApiMessages::FRONT_MESSAGES") | json_encode | raw }}');
+    </script>
+    {{ encore_entry_script_tags("app") }}
+    {% block javascripts %}{% endblock %}
+</body>
+
+</html>

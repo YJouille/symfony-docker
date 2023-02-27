@@ -1,0 +1,57 @@
+security:
+    enable_authenticator_manager: true
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    providers:
+        app_user_provider:
+            entity:
+                class: 'App\Entity\User'
+                property: 'email'
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            user_checker: App\Security\UserChecker
+            entry_point: App\Security\LoginFormAuthenticator
+            custom_authenticators: 
+                - App\Security\LoginFormAuthenticator
+            switch_user: true
+            logout:
+                path: logout
+                target: login
+            remember_me:
+                secret: '%kernel.secret%'
+                always_remember_me: true
+                signature_properties: [ 'password', 'updatedAt' ]
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/(login|connexion|logout|deconnexion) }, roles: PUBLIC_ACCESS }
+        ## @todo IS_AUTHENTICATED_FULLY
+        # - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+    role_hierarchy:
+        ROLE_ADMIN: [ ROLE_TEST ]
+        ROLE_TEST : [ ROLE_USER ]
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
